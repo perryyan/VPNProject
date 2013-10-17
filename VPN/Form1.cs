@@ -261,7 +261,7 @@ namespace VPN
             serverGroupBox.Visible = true;
             ContinueButton.Visible = true;
             // set send button to be read only
-            button2.Enabled = false;
+            button2.Enabled = true;
         }
 
         // Check mode based on which radio button is selected
@@ -456,8 +456,9 @@ namespace VPN
                 try
                 {
 
-                    byte[] bytes = Cryptography.Encrypt(unencr_message, IVb,SessionKeyb);
-
+                    //byte[] bytes = Cryptography.Encrypt(unencr_message, IVb,SessionKeyb);
+                    string cipher = Cryptography.Encrypt(unencr_message, Convert.ToString(SessionKey));
+                    byte[] bytes = ASCIIEncoding.ASCII.GetBytes(cipher);
                     //Send it to the client
                     sending.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, new AsyncCallback(OnSend), sending);
                     bytes = null;
@@ -480,9 +481,11 @@ namespace VPN
                     // Unencrypted message
                     string unencr_message = textSendMessage.Text;
 
-                    // Encrypt messsage
-                    byte[] bytes = Cryptography.Encrypt(unencr_message, IVb, SessionKeyb);
+                    //byte[] bytes = Cryptography.Encrypt(unencr_message, IVb,SessionKeyb);
+                    string cipher = Cryptography.Encrypt(unencr_message, Convert.ToString(SessionKey));
+                    byte[] bytes = ASCIIEncoding.ASCII.GetBytes(cipher);
 
+                    //Send it to the client
                     //Send it to the server
                     clientSocket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, new AsyncCallback(OnSend), null);
                     //clientSocket.BeginSend(encrypted, 0, encrypted.Length, SocketFlags.None, new AsyncCallback(OnSend), null);
@@ -642,8 +645,9 @@ namespace VPN
                     string plain = nonce_client + "," + SessionKeyPart_Server;
                     WriteConsoleOutput("DEBUG: plain = " + plain);
 
-                    byte[] cipher = Cryptography.Encrypt(plain, IVb, sharedPrivateKey_bytes);
-                    SendDataBytes(cipher);
+                   // byte[] cipher = Cryptography.Encrypt(plain, IVb, sharedPrivateKey_bytes);
+                   string cipher = Cryptography.Encrypt(plain, sharedPrivateKey);
+                    SendDataString(cipher);
                     WriteConsoleOutput("waiting for client to send encrypted auth");
 
                 }
@@ -652,7 +656,7 @@ namespace VPN
                 {
                     WriteConsoleOutput("buffered data = " + data);
                     // Decrypt client's encrypted auth message
-                    string decrypted = Cryptography.Decrypt(byteData, IVb, sharedPrivateKey_bytes);
+                    string decrypted = Cryptography.Decrypt(data, sharedPrivateKey);
                     WriteConsoleOutput("DEBUG: decrypted = " + decrypted);
                     // Explode into substrings
                     string[] substrings = decrypted.Split(',');
@@ -716,7 +720,11 @@ namespace VPN
                 {
                     // Receive encrypted data
                     WriteConsoleOutput("buffered data = " + data);
-                    string decrypted = Cryptography.Decrypt(byteData, IVb, sharedPrivateKey_bytes);
+                    //string decrypted = Cryptography.Decrypt(, IVb, sharedPrivateKey_bytes);
+                    string converted_b64 = Convert.ToBase64String(byteData);
+                    string decrypted = Cryptography.Decrypt(converted_b64, sharedPrivateKey);
+
+                    WriteConsoleOutput(decrypted);
                     string[] substrings = decrypted.Split(',');
 
                     if (!nonce_server.Equals(substrings[0]))
@@ -731,11 +739,14 @@ namespace VPN
 
                     // Encrypt("nonce_s, A", Kab)
                     string plainText = nonce_server + "," + SessionKeyPart_Client;
-                    byte[] encrypted = Cryptography.Encrypt(plainText, IVb, sharedPrivateKey_bytes);
 
-                    // Send encrypted
-                    SendDataBytes(encrypted);
-
+                    WriteConsoleOutput("DEBUG: plain = " + plainText);
+                    
+                    //byte[] encrypted = Cryptography.Encrypt(plainText, IVb, sharedPrivateKey_bytes);
+                    string encrypted = Cryptography.Encrypt(plainText, sharedPrivateKey);
+                    //Send encrypted
+                    //SendDataBytes(encrypted);
+                    SendDataString(encrypted);
                     // Calclate session key
                     GenerateSessionKey();
                     WriteConsoleOutput("generated session key");
@@ -758,7 +769,7 @@ namespace VPN
 
         public static class Cryptography
         {
-            /*
+            
             #region Settings
 
             private static int _iterations = 2;
@@ -852,7 +863,8 @@ namespace VPN
             }
 
         }
-    }*/
+    }
+    /*
 
             public static byte[] Encrypt(string plainText, byte[] Key, byte[] IV)
             {
@@ -942,6 +954,6 @@ namespace VPN
                 return plaintext;
             }
         }
-    }
+    }*/
 }
 

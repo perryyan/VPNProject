@@ -21,3 +21,11 @@ F:\Dropbox\UBC\EECE412Group\assn3\v0.4\VPN\obj\x86\Debug\VPN.Properties.Resource
 F:\Dropbox\UBC\EECE412Group\assn3\v0.4\VPN\obj\x86\Debug\VPN.csproj.GenerateResource.Cache
 F:\Dropbox\UBC\EECE412Group\assn3\v0.4\VPN\bin\Debug\VPN.exe
 F:\Dropbox\UBC\EECE412Group\assn3\v0.4\VPN\bin\Debug\VPN.pdb
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\obj\x86\Debug\VPN.exe
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\obj\x86\Debug\VPN.pdb
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\bin\Debug\VPN.exe
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\bin\Debug\VPN.pdb
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\obj\x86\Debug\VPN.csprojResolveAssemblyReference.cache
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\obj\x86\Debug\VPN.Form1.resources
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\obj\x86\Debug\VPN.Properties.Resources.resources
+F:\Dropbox\UBC\EECE412Group\assn3\v0.5\VPN\obj\x86\Debug\VPN.csproj.GenerateResource.Cache
