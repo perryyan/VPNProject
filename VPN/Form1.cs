@@ -182,7 +182,7 @@ namespace VPN
         // Generic send data function
         public void SendDataBytes(byte[] data)
         {
-            WriteConsoleOutput("Send: " + ASCIIEncoding.ASCII.GetString(data);
+            WriteConsoleOutput("Send: " + ASCIIEncoding.ASCII.GetString(data));
             if (serverMode)
             {
                 try
@@ -202,8 +202,9 @@ namespace VPN
                 try
                 {
                     //Send it to the server
+                    byte[] bytes = data;
                     clientSocket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, new AsyncCallback(OnSend), null);
-
+                    bytes = null;
                 }
                 catch (Exception)
                 {
@@ -240,7 +241,7 @@ namespace VPN
                     listMessageLink.Items.Add(data);
                     //Send it to the server
                     clientSocket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, new AsyncCallback(OnSend), null);
-
+                    bytes = null;
                 }
                 catch (Exception)
                 {
@@ -486,7 +487,7 @@ namespace VPN
                     clientSocket.BeginSend(bytes, 0, bytes.Length, SocketFlags.None, new AsyncCallback(OnSend), null);
                     //clientSocket.BeginSend(encrypted, 0, encrypted.Length, SocketFlags.None, new AsyncCallback(OnSend), null);
                     listMessageLink.Items.Add(textSendMessage.Text);
-
+                    bytes = null;
 
                     // Output onto console box
                     WriteConsoleOutput("Send: " + ASCIIEncoding.ASCII.GetString(bytes));
